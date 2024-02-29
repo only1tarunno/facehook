@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Field from "../common/Field";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -10,12 +11,30 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
   const formSubmit = async (data) => {
-    const user = { ...data };
-    setAuth({ user });
-    navigate("/");
+    try {
+      const res = await axios.post(`http://localhost:3000/auth/login`, data);
+      if (res.status === 200) {
+        const { token, user } = res.data;
+        if (token) {
+          const authtoken = token.token;
+          const refreshToken = token.refreshToken;
+
+          setAuth({ user, authtoken, refreshToken });
+
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setError("root.random", {
+        type: "random",
+        message: `user email is not found`,
+      });
+    }
   };
   return (
     <form
@@ -49,7 +68,7 @@ const LoginForm = () => {
           id="password"
         />
       </Field>
-
+      <p>{errors?.root?.random?.message}</p>
       {/* <!-- Submit --> */}
       <Field>
         <button

@@ -9,6 +9,7 @@ import useAuth from "../../hooks/useAuth";
 const Header = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
+  const { auth } = useAuth();
 
   const handleLogOut = () => {
     setAuth({});
@@ -38,14 +39,16 @@ const Header = () => {
             <img src={logout} alt="Logout" />
           </button>
 
-          <button className="flex-center !ml-8 gap-3">
-            <span className="text-lg font-medium lg:text-xl">Sumit</span>
+          <Link to="/profile" className="flex-center !ml-8 gap-3">
+            <span className="text-lg font-medium lg:text-xl">
+              {auth?.user?.firstName}
+            </span>
             <img
               className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
               src={avatar}
               alt=""
             />
-          </button>
+          </Link>
         </div>
         {/* <!-- nav links ends --> */}
       </div>
