@@ -1,14 +1,5 @@
-import Header from "../../components/common/Header";
-import useAuth from "../../hooks/useAuth";
-
 const HomePage = () => {
-  const { auth } = useAuth();
-
-  return (
-    <>
-      <Header />
-    </>
-  );
+  return <>fff</>;
 };
 
 export default HomePage;

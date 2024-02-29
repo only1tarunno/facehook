@@ -4,11 +4,14 @@ import logout from "../../assets/icons/logout.svg";
 import avatar from "../../assets/images/avatars/avatar_1.png";
 import logo from "../../assets/images/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const handleLogOut = () => {
+    setAuth({});
     navigate("/login");
   };
   return (
