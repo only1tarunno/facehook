@@ -1,7 +1,7 @@
 import useProfile from "../../hooks/useProfile";
 import editIcon from "../../assets/icons/edit.svg";
 import check from "../../assets/icons/addPhoto.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import { actions } from "../../actions";
 
@@ -11,8 +11,10 @@ const Bio = () => {
 
   const [bio, setBio] = useState(state?.user?.bio || "");
   const [editMode, setEditMode] = useState(false);
-  console.log(state?.user?.bio);
-  console.log(bio);
+
+  useEffect(() => {
+    setBio(state?.user?.bio);
+  }, [state?.user?.bio]);
 
   const handleBioEdit = async () => {
     dispatch({ type: actions.profile.DATA_FETCHING });
@@ -24,7 +26,7 @@ const Bio = () => {
       }
       setEditMode(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
