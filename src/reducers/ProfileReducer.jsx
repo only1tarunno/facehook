@@ -1,4 +1,4 @@
-import { action } from "../actions";
+import { actions } from "../actions";
 
 const initialState = {
   user: null,
@@ -9,14 +9,14 @@ const initialState = {
 
 const profileReducer = (state, action) => {
   switch (action.type) {
-    case action.profile.DATA_FETCHING: {
+    case actions.profile.DATA_FETCHING: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case action.profile.DATA_FECTHED: {
+    case actions.profile.DATA_FECTHED: {
       return {
         ...state,
         loading: false,
@@ -25,7 +25,7 @@ const profileReducer = (state, action) => {
       };
     }
 
-    case action.profile.DATA_FETCH_ERROR: {
+    case actions.profile.DATA_FETCH_ERROR: {
       return {
         ...state,
         loading: false,

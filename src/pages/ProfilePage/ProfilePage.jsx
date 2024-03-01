@@ -1,37 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import useProfile from "../../hooks/useProfile";
+import { actions } from "../../actions";
 
 const ProfilePage = () => {
-  const [user, setUser] = useState(null);
-  const [post, setPost] = useState([]);
-  const [loading, setLoadin] = useState(false);
-  const [error, setError] = useState(null);
-
   const { api } = useAxios();
   const { auth } = useAuth();
+  const { state, dispatch } = useProfile();
 
   useEffect(() => {
-    setLoadin(true);
+    dispatch({ type: actions.profile.DATA_FETCHING });
     const fetchProfile = async () => {
       try {
         const res = await api.get(`/profile/${auth?.user?.id}`);
 
-        setUser(res?.data?.user);
-        setPost(res?.data?.posts);
+        if (res.status === 200) {
+          dispatch({ type: actions.profile.DATA_FECTHED, data: res.data });
+        }
       } catch (err) {
-        setError(err);
-      } finally {
-        setLoadin(false);
+        dispatch({ type: actions.profile.DATA_FETCH_ERROR, error: err });
       }
     };
 
     fetchProfile();
   }, []);
 
-  if (loading) <div>fecth Data</div>;
+  if (state?.loading) <div>fecth Data</div>;
 
-  return <div>{user?.firstName}</div>;
+  return <div>{state?.user?.firstName}</div>;
 };
 
 export default ProfilePage;

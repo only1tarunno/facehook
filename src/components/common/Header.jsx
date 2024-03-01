@@ -5,11 +5,13 @@ import avatar from "../../assets/images/avatars/avatar_1.png";
 import logo from "../../assets/images/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useProfile from "../../hooks/useProfile";
 
 const Header = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
-  const { auth } = useAuth();
+
+  const { state } = useProfile();
 
   const handleLogOut = () => {
     setAuth({});
@@ -41,7 +43,7 @@ const Header = () => {
 
           <Link to="/profile" className="flex-center !ml-8 gap-3">
             <span className="text-lg font-medium lg:text-xl">
-              {auth?.user?.firstName}
+              {state?.user?.firstName}
             </span>
             <img
               className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"

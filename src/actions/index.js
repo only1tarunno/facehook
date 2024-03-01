@@ -1,4 +1,4 @@
-export const action = {
+export const actions = {
   profile: {
     DATA_FETCHING: "PROFILE_DATA_FECTHING",
     DATA_FECTHED: "PROFILE_DATA_FECTHED",
