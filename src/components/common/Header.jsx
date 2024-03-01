@@ -9,9 +9,11 @@ import useProfile from "../../hooks/useProfile";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const { state } = useProfile();
+
+  const user = state?.user ?? auth?.user;
 
   const handleLogOut = () => {
     setAuth({});
@@ -43,11 +45,11 @@ const Header = () => {
 
           <Link to="/profile" className="flex-center !ml-8 gap-3">
             <span className="text-lg font-medium lg:text-xl">
-              {state?.user?.firstName}
+              {user?.firstName}
             </span>
             <img
-              className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
-              src={avatar}
+              className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px] rounded-full"
+              src={`http://localhost:3000/${user?.avatar}`}
               alt=""
             />
           </Link>

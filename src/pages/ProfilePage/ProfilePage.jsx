@@ -3,6 +3,8 @@ import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
 import useProfile from "../../hooks/useProfile";
 import { actions } from "../../actions";
+import ProfileInfo from "../../components/profile/ProfileInfo";
+import MyPost from "../../components/profile/MyPost";
 
 const ProfilePage = () => {
   const { api } = useAxios();
@@ -28,7 +30,12 @@ const ProfilePage = () => {
 
   if (state?.loading) <div>fecth Data</div>;
 
-  return <div>{state?.user?.firstName}</div>;
+  return (
+    <>
+      <ProfileInfo />
+      <MyPost />
+    </>
+  );
 };
 
 export default ProfilePage;
