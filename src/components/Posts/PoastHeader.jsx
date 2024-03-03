@@ -6,13 +6,44 @@ import time from "../../assets/icons/time.svg";
 import { getDateDifferenceFromNow } from "../../utils";
 import { useAvatar } from "../../hooks/useAvatar";
 import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import usePost from "../../hooks/usePost";
+import useAxios from "../../hooks/useAxios";
+import { actions } from "../../actions";
 
 const PoastHeader = ({ post }) => {
   const { avatarURL } = useAvatar(post);
   const [showAction, setShowAction] = useState(false);
+  const { auth } = useAuth();
+  const { dispatch } = usePost();
+  const { api } = useAxios();
+
+  const isMe = post?.author?.id === auth?.user?.id;
 
   const handleToggle = () => {
     setShowAction(!showAction);
+  };
+
+  const handleDelete = async (p) => {
+    dispatch({ type: actions.post.DATA_FETCHING });
+    try {
+      const response = await api.delete(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/posts/${p.id}`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: actions.post.POST_DELETED,
+          data: post.id,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch({
+        type: actions.post.DATA_FETCH_ERROR,
+        error: error,
+      });
+    }
   };
 
   return (
@@ -38,9 +69,11 @@ const PoastHeader = ({ post }) => {
 
       {/* <!-- action dot --> */}
       <div className="relative">
-        <button onClick={handleToggle}>
-          <img src={threedot} alt="3dots of Action" />
-        </button>
+        {isMe && (
+          <button onClick={handleToggle}>
+            <img src={threedot} alt="3dots of Action" />
+          </button>
+        )}
 
         {/* <!-- Action Menus Popup --> */}
         {showAction && (
@@ -49,7 +82,10 @@ const PoastHeader = ({ post }) => {
               <img src={edit} alt="Edit" />
               Edit
             </button>
-            <button className="action-menu-item hover:text-red-500">
+            <button
+              onClick={() => handleDelete(post)}
+              className="action-menu-item hover:text-red-500"
+            >
               <img src={deleteIcon} alt="Delete" />
               Delete
             </button>

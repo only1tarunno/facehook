@@ -25,19 +25,19 @@ const PostEntry = ({ onCreate }) => {
   } = useForm();
 
   const handlePostSubmit = async (e) => {
-    const formData = new FormData();
+    const post = new FormData();
     // append image
     for (const file of e.image) {
-      formData.append("image", file);
+      post.append("image", file);
     }
     // append content
-    formData.append("content", e.content);
+    post.append("content", e.content);
 
     dispatch({ type: actions.post.DATA_FETCHING });
     try {
       const response = await api.post(
         `${import.meta.env.VITE_SERVER_BASE_URL}/posts`,
-        { formData }
+        post
       );
 
       if (response.status === 200) {
