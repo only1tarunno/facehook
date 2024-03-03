@@ -25,10 +25,13 @@ const PostEntry = ({ onCreate }) => {
   } = useForm();
 
   const handlePostSubmit = async (e) => {
-    const formData = {
-      image: e.image[0],
-      content: e.content,
-    };
+    const formData = new FormData();
+    // append image
+    for (const file of e.image) {
+      formData.append("image", file);
+    }
+    // append content
+    formData.append("content", e.content);
 
     dispatch({ type: actions.post.DATA_FETCHING });
     try {
@@ -83,11 +86,12 @@ const PostEntry = ({ onCreate }) => {
             Add Photo
           </label>
           <input
-            {...register("image")}
             type="file"
             name="image"
             id="image"
             className="hidden"
+            accept="image/*"
+            {...register("image")}
           />
         </div>
         <Field label="" error={errors.content}>
